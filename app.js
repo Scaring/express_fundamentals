@@ -1,27 +1,27 @@
 const express = require('express');
+const morgan = require('morgan');
 
-const {
-  getAllTours,
-  getById,
-  postTour,
-  patchTour,
-  deleteTour,
-} = require('./routes');
+const { getReqTime } = require('./middlewares');
+
+const { toursRouter, usersRouter } = require('./routes');
 
 const app = express();
 
+if (process.env.NODE_ENV === 'development') {
+  app.use(morgan('dev'));
+}
+
 app.use(express.json());
+app.use(getReqTime);
 
-app.route('/api/v1/tours').get(getAllTours).post(postTour);
-app.route('/api/v1/tours/:id').get(getById).patch(patchTour).delete(deleteTour);
+app.use(express.static(`${__dirname}/public`));
 
-// app.get('/api/v1/tours', getAllTours);
-// app.get('/api/v1/tours/:id', getById);
-// app.post('/api/v1/tours', postTour);
-// app.patch('/api/v1/tours/:id', patchTour);
-// app.delete('/api/v1/tours/:id', deleteTour);
+app.use('/api/v1/tours', toursRouter);
+app.use('/api/v1/users', usersRouter);
 
-const port = 3000;
-app.listen(port, () => {
-  console.log(`app running on port: ${port}...`);
+app.use((err, req, res, next) => {
+  console.log(err.message);
+  res.status(400).json(err.message);
 });
+
+module.exports = app;

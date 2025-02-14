@@ -178,5 +178,14 @@
     "active": true,
     "photo": "user-20.jpg",
     "password": "$2a$12$uA9FsDw63v6dkJKGlLQ/8ufYBs8euB7kqIQewyYlZXU5azEKeLEky"
+  },
+  {
+    "name": "Jonasssss Schmedtmannnnnnn",
+    "email": "user@natours.io",
+    "role": "user",
+    "active": true,
+    "photo": "user-1.jpg",
+    "password": "$2a$12$Q0grHjH9PXc6SxivC8m12.2mZJ9BbKcgFpwSG4Y1ZEII8HJVzWeyS",
+    "_id": "vfkc70d5cepsh31czj76"
   }
 ]
