@@ -1,19 +1,16 @@
-const fs = require('fs');
-const path = require('path');
-const { tours } = require('../../helpers');
+const { Tour } = require('../../models');
 
-const toursPath = path.join(__dirname, '../../dev-data/data/tours-simple.json');
+const deleteTour = async (req, res) => {
+  try {
+    await Tour.findByIdAndDelete(req.params.id);
 
-const deleteTour = (req, res) => {
-  const currentTour = tours.find((el) => el.id === +req.params.id);
-
-  const currentTourIdx = tours.indexOf(currentTour);
-
-  tours.splice(currentTourIdx, 1);
-
-  fs.writeFile(toursPath, JSON.stringify(tours), () => {
-    res.status(204).json();
-  });
+    res.status(204).json(null);
+  } catch (error) {
+    res.status(404).json({
+      status: 'fail',
+      message: error.message,
+    });
+  }
 };
 
 module.exports = deleteTour;

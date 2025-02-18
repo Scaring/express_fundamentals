@@ -1,13 +1,13 @@
 const getAllTours = require('./getAllTours');
 const getTourById = require('./getTourById');
-const postTour = require('./postTour');
+const createTour = require('./createTour');
 const patchTour = require('./patchTour');
 const deleteTour = require('./deleteTour');
 
 module.exports = {
   getAllTours,
   getTourById,
-  postTour,
+  createTour,
   patchTour,
   deleteTour,
 };
