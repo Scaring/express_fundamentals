@@ -3,7 +3,7 @@
 const controllerName = (req, res) => {
   res.status(500).json({
     status: 'error',
-    message: 'rout is not defined!',
+    message: 'rout is not implemented yet!',
   });
 };
 

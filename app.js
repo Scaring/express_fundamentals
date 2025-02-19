@@ -20,8 +20,10 @@ app.use('/api/v1/tours', toursRouter);
 app.use('/api/v1/users', usersRouter);
 
 app.use((err, req, res, next) => {
-  console.log(err.message);
-  res.status(400).json(err.message);
+  res.status(404).json({
+    status: 'fail',
+    message: err.message,
+  });
 });
 
 module.exports = app;
