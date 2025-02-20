@@ -20,6 +20,7 @@ app.use('/api/v1/tours', toursRouter);
 app.use('/api/v1/users', usersRouter);
 
 app.use((err, req, res, next) => {
+  console.log(err);
   res.status(404).json({
     status: 'fail',
     message: err.message,
