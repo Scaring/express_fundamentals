@@ -1,29 +1,25 @@
 const { Tour } = require('../../models');
 
-const { APIFeatures } = require('../../utils');
+const { APIFeatures, catchAsync } = require('../../utils');
 
-const getAllTours = async (req, res, next) => {
-  try {
-    //EXECUTE QUERY
-    const features = new APIFeatures(Tour.find(), req.query)
-      .filter()
-      .sort()
-      .limitFields()
-      .pagination();
+const getAllTours = catchAsync(async (req, res, next) => {
+  //EXECUTE QUERY
+  const features = new APIFeatures(Tour.find(), req.query)
+    .filter()
+    .sort()
+    .limitFields()
+    .pagination();
 
-    const tours = await features.query;
+  const tours = await features.query;
 
-    //SEND QUERY
-    res.status(200).json({
-      status: 'success',
-      results: tours.length,
-      page: req.page,
-      data: { tours },
-    });
-  } catch (error) {
-    next(error);
-  }
-};
+  //SEND QUERY
+  res.status(200).json({
+    status: 'success',
+    results: tours.length,
+    page: req.page,
+    data: { tours },
+  });
+});
 
 module.exports = getAllTours;
 

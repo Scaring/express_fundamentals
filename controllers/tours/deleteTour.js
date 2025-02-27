@@ -1,16 +1,14 @@
 const { Tour } = require('../../models');
+const { catchAsync } = require('../../utils');
 
-const deleteTour = async (req, res) => {
-  try {
-    await Tour.findByIdAndDelete(req.params.id);
+const deleteTour = catchAsync(async (req, res, next) => {
+  const tour = await Tour.findByIdAndDelete(req.params.id);
 
-    res.status(204).json(null);
-  } catch (error) {
-    res.status(404).json({
-      status: 'fail',
-      message: error.message,
-    });
+  if (!tour) {
+    return next(new AppError('No tour found with that id!', 404));
   }
-};
+
+  res.status(204).json(null);
+});
 
 module.exports = deleteTour;

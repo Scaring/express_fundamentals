@@ -2,6 +2,8 @@ const express = require('express');
 const dotenv = require('dotenv');
 const morgan = require('morgan');
 
+const { AppError } = require('./utils');
+const { globalErrorHandler } = require('./controllers/errors');
 const { toursRouter, usersRouter } = require('./routes');
 
 dotenv.config({ path: './config.env' });
@@ -19,12 +21,14 @@ app.use(express.static(`${__dirname}/public`)); // http://localhost:3000/overvie
 app.use('/api/v1/tours', toursRouter);
 app.use('/api/v1/users', usersRouter);
 
-app.use((err, req, res, next) => {
-  console.log(err);
-  res.status(404).json({
-    status: 'fail',
-    message: err.message,
-  });
+app.all('*', (req, res, next) => {
+  const err = new AppError(
+    `Can't find ${req.originalUrl} on this server!`,
+    404,
+  );
+  next(err);
 });
+
+app.use(globalErrorHandler);
 
 module.exports = app;

@@ -1,26 +1,21 @@
 const { Tour } = require('../../models');
+const { catchAsync } = require('../../utils');
 
-const patchTour = async (req, res) => {
-  try {
-    const tour = await Tour.findByIdAndUpdate(req.params.id, req.body, {
-      new: true,
-      runValidators: true,
-    });
+const patchTour = catchAsync(async (req, res, next) => {
+  const tour = await Tour.findByIdAndUpdate(req.params.id, req.body, {
+    new: true,
+    runValidators: true,
+  });
 
-    console.log(req.body);
-    console.log(req.params);
-
-    res.status(200).json({
-      status: 'success',
-      data: { tour },
-    });
-  } catch (error) {
-    res.status(404).json({
-      status: 'fail',
-      message: error.message,
-    });
+  if (!tour) {
+    return next(new AppError('No tour found with that id!', 404));
   }
-};
+
+  res.status(200).json({
+    status: 'success',
+    data: { tour },
+  });
+});
 
 module.exports = patchTour;
 

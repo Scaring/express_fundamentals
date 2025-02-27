@@ -1,19 +1,17 @@
 const { Tour } = require('../../models');
+const { catchAsync, AppError } = require('../../utils');
 
-const getTourById = async (req, res) => {
-  try {
-    const tour = await Tour.findById(req.params.id);
+const getTourById = catchAsync(async (req, res, next) => {
+  const tour = await Tour.findById(req.params.id);
 
-    res.status(200).json({
-      status: 'success',
-      data: { tour },
-    });
-  } catch (error) {
-    res.status(404).json({
-      status: 'fail',
-      message: error.message,
-    });
+  if (!tour) {
+    return next(new AppError('No tour found with that id!', 404));
   }
-};
+
+  res.status(200).json({
+    status: 'success',
+    data: { tour },
+  });
+});
 
 module.exports = getTourById;
